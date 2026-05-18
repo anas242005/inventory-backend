@@ -12,10 +12,13 @@ app.use('/api/products', require('./routes/products'));
 app.use('/api/stocks', require('./routes/stocks'));
 app.use('/api/auth', require('./routes/auth'));
 
-// FIXED PORT HANDLING (VERY IMPORTANT)
-const PORT = process.env.PORT || 8080;
+if (!process.env.MONGO_URI) {
+  console.error("MONGO_URI is missing");
+  process.exit(1);
+}
 
-// MongoDB connection
+const PORT = process.env.PORT;
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('MongoDB connected');
